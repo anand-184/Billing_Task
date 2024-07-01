@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.anand.bill_invoice.databinding.FragmentBillBinding
 
 
@@ -13,12 +14,12 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 
-
 class BillFragment : Fragment() {
     var mainActivity: MainActivity? = null
-    var binding:FragmentBillBinding? = null
-    var selectedItemArray = arrayListOf<ItemData>()
-   lateinit  var billAdapter: ArrayAdapter<ItemData>
+    var binding: FragmentBillBinding? = null
+    lateinit var billAdapter: ArrayAdapter<ItemData>
+    val zero = 0
+    var qty = ""
 
     private var param1: String? = null
     private var param2: String? = null
@@ -44,20 +45,49 @@ class BillFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        billAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item,selectedItemArray)
+        billAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_expandable_list_item_1,
+            mainActivity?.itemArray ?: arrayListOf()
+        )
         binding?.dynamicSpinner?.adapter = billAdapter
         billAdapter.notifyDataSetChanged()
-
-
-
-
-
-        binding?.btnOrder?.setOnClickListener {
+        var selectedItem = binding?.dynamicSpinner?.selectedItem as ItemData
+        binding?.tvselectedItemQty?.setText("0")
+        binding?.btnMinusQty?.setOnClickListener {
+            if (binding?.tvselectedItemQty?.text.toString().toInt() < 1) {
+                Toast.makeText(
+                    requireContext(),
+                    "ItemQty can't be decreased more",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                var qty = binding?.tvselectedItemQty?.text.toString().toInt()
+                qty--
+                binding?.tvselectedItemQty?.setText(qty.toString())
+            }
+        }
+        binding?.btnAddQty?.setOnClickListener {
+            if (binding?.tvselectedItemQty?.text.toString().toInt()>selectedItem.getQty()) {
+                Toast.makeText(requireContext(), "Qty can't be increased", Toast.LENGTH_SHORT).show()
+            } else {
+                var qty = binding?.tvselectedItemQty?.text.toString().toInt()
+                qty++
+                binding?.tvselectedItemQty?.setText(qty.toString())
+            }
 
         }
+        binding?.btnOrder?.setOnClickListener {
+            if (binding?.tvselectedItemQty?.text.toString().toInt() < 1) {
+                Toast.makeText(requireContext(), "Order cannot be placed", Toast.LENGTH_LONG).show()
+            } else if (binding?.tvselectedItemQty?.text.toString().toInt() > selectedItem.getQty()
+            ) {
+                Toast.makeText(requireContext(), "order cannot be placed", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(requireContext(), "Order Placed", Toast.LENGTH_LONG).show()
+            }
 
-
-
+        }
     }
 
     companion object {
@@ -72,3 +102,5 @@ class BillFragment : Fragment() {
             }
     }
 }
+
+

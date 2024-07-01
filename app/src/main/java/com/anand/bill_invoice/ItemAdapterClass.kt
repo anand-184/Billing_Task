@@ -24,7 +24,7 @@ class ItemAdapterClass(var itemArray: ArrayList<ItemData>):BaseAdapter() {
         var tvItemQty = view.findViewById<TextView>(R.id.tvItemQty)
         tvItemNo.setText(itemArray[p0].itemNo.toString())
         tvItemName.setText(itemArray[p0].itemName)
-        tvItemQty.setText(itemArray[p0].itemqty)
+        tvItemQty.setText(itemArray[p0].itemqty.toString())
         return view
     }
 }

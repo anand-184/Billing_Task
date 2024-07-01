@@ -20,9 +20,8 @@ private const val ARG_PARAM2 = "param2"
 class ItemFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
-    var binding:  FragmentItemBinding? = null
+    var binding: FragmentItemBinding? = null
     var mainActivity: MainActivity? = null
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +31,6 @@ class ItemFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
         mainActivity = activity as MainActivity
-       mainActivity?.itemArray?.add(ItemData("1","Samosa","4"))
-        mainActivity?.itemArray?.add(ItemData("2.","Cheese","5"))
-
     }
 
     override fun onCreateView(
@@ -47,65 +43,80 @@ class ItemFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainActivity?.binding?.itemListView?.adapter = mainActivity?.ItemAdapter
+        binding?.itemListView?.adapter = mainActivity?.ItemAdapter
         binding?.fabAdditem?.setOnClickListener {
             var addDialog = Dialog(requireContext()).apply {
-               setContentView(R.layout.add_dialog)
-                window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT)
+                setContentView(R.layout.add_dialog)
+                window?.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
                 show()
             }
-            var btnAdded =addDialog.findViewById<Button>(R.id.btnAdd)
+            var btnAdded = addDialog.findViewById<Button>(R.id.btnAdd)
             var newItemNo = addDialog.findViewById<EditText>(R.id.etAdditemNo)
             var newItemName = addDialog.findViewById<EditText>(R.id.etAddItemName)
             var newItemQty = addDialog.findViewById<EditText>(R.id.etAdditemQty)
             btnAdded.setOnClickListener {
-                if(newItemName.text.toString().isNullOrEmpty()){
-                    newItemName.error ="Enter Item Name"
-                }else if(newItemQty.text.toString().isNullOrEmpty()){
+                if (newItemName.text.toString().isNullOrEmpty()) {
+                    newItemName.error = "Enter Item Name"
+                } else if (newItemQty.text.toString().isNullOrEmpty()) {
                     newItemQty.error = "Enter Quantity"
-                }else if(newItemNo.text.toString().isNullOrEmpty()){
+                } else if (newItemNo.text.toString().isNullOrEmpty()) {
                     newItemNo.error = "Enter Item No."
-                }else{
-                   mainActivity?.itemArray?.add(ItemData("$newItemNo",
-                        "$newItemName","$newItemQty"))
+                } else {
+                    mainActivity?.itemArray?.add(
+                        ItemData(
+                            itemNo = newItemNo.text.toString(),
+                            itemName = newItemName.text.toString(),
+                            itemqty = newItemQty.text.toString()
+                        )
+                    )
                     mainActivity?.ItemAdapter?.notifyDataSetChanged()
                     addDialog.dismiss()
                 }
             }
         }
-        mainActivity?.binding?.itemListView?.setOnItemClickListener { adapterView, view, i, l ->
+        binding?.itemListView?.setOnItemClickListener { adapterView, view, i, l ->
 
-             var updateDialog = Dialog(requireContext()).apply {
-                 setContentView(R.layout.update_dialog_layout)
-                 show()
-             }
+            var updateDialog = Dialog(requireContext()).apply {
+                setContentView(R.layout.update_dialog_layout)
+                show()
+            }
             var updateButton = updateDialog.findViewById<Button>(R.id.btnUpdate)
             var item_name = updateDialog.findViewById<TextView>(R.id.tvitemname)
             var item_qty = updateDialog.findViewById<EditText>(R.id.etitemqty)
-            var selectedItem = mainActivity?.binding?.itemListView!!.selectedItem as String
+            var selectedItem = binding?.itemListView!!.selectedItem as String
             item_name.setText("$selectedItem")
             updateButton.setOnClickListener {
-                if(item_qty.text.toString().trim().isNullOrEmpty()){
+                if (item_qty.text.toString().trim().isNullOrEmpty()) {
                     item_qty.error = "enter qty"
-                }else{
-                     mainActivity?.itemArray?.set(i,ItemData("$i","$item_name","$item_qty"))
+                } else {
+                    mainActivity?.itemArray?.set(
+                        i,
+                        ItemData(
+                            itemNo = i.toString(),
+                            itemName = item_name.text.toString(),
+                            itemqty = item_qty.text.toString()
+                        )
+                    )
                     updateDialog.dismiss()
 
                 }
 
             }
         }
-        mainActivity?.binding?.itemListView?.setOnItemLongClickListener { adapterView, view, i, l ->
+        binding?.itemListView?.setOnItemLongClickListener { adapterView, view, i, l ->
             var alertDialog = AlertDialog.Builder(requireContext())
             alertDialog.setTitle("Remove Item")
             alertDialog.setMessage("Do You want to Delete Item")
-            alertDialog.setPositiveButton("YES"){_,_->
+            alertDialog.setPositiveButton("YES") { _, _ ->
                 mainActivity?.itemArray?.removeAt(i)
                 mainActivity?.ItemAdapter?.notifyDataSetChanged()
             }
-            alertDialog.setNegativeButton("NO"){_,_->
+            alertDialog.setNegativeButton("NO") { _, _ ->
             }
+            alertDialog.show()
             return@setOnItemLongClickListener true
         }
     }

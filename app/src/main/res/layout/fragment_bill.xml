@@ -11,12 +11,48 @@
         android:id="@+id/dynamicSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.065" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.285">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMinusQty"
+            android:layout_width="57dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:text="-"
+            app:cornerRadius="2dp" />
+        <TextView
+            android:id="@+id/tvselectedItemQty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Selected Item"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddQty"
+            android:layout_width="57dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:text="+"
+            app:cornerRadius="2dp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnOrder"

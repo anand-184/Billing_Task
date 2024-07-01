@@ -13,7 +13,7 @@ import com.anand.bill_invoice.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     var binding : ActivityMainBinding? = null
     var navController : NavController? = null
-    var itemArray = ArrayList<ItemData>()
+    var itemArray = arrayListOf<ItemData>()
     var ItemAdapter= ItemAdapterClass(itemArray)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
