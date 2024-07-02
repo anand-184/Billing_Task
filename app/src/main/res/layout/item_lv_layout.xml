@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="itemNo."
+            android:inputType="number"
             android:textSize="20sp" />
         <TextView
             android:id="@+id/tvItemName"
@@ -36,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:text="itemQty."
+            android:inputType="number"
             android:textSize="20sp" />
 
 

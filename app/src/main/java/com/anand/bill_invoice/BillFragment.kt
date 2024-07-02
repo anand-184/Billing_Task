@@ -18,7 +18,6 @@ class BillFragment : Fragment() {
     var mainActivity: MainActivity? = null
     var binding: FragmentBillBinding? = null
     lateinit var billAdapter: ArrayAdapter<ItemData>
-    val zero = 0
     var qty = ""
 
     private var param1: String? = null
@@ -47,15 +46,14 @@ class BillFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         billAdapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_expandable_list_item_1,
+            android.R.layout.simple_spinner_item,
             mainActivity?.itemArray ?: arrayListOf()
         )
         binding?.dynamicSpinner?.adapter = billAdapter
         billAdapter.notifyDataSetChanged()
-        var selectedItem = binding?.dynamicSpinner?.selectedItem as ItemData
-        binding?.tvselectedItemQty?.setText("0")
+        binding?.tvselectedItemQty?.setText("1")
         binding?.btnMinusQty?.setOnClickListener {
-            if (binding?.tvselectedItemQty?.text.toString().toInt() < 1) {
+            if (binding?.tvselectedItemQty?.text.toString().toInt() <= 1) {
                 Toast.makeText(
                     requireContext(),
                     "ItemQty can't be decreased more",
@@ -68,7 +66,8 @@ class BillFragment : Fragment() {
             }
         }
         binding?.btnAddQty?.setOnClickListener {
-            if (binding?.tvselectedItemQty?.text.toString().toInt()>selectedItem.getQty()) {
+            var selectedItem = binding?.dynamicSpinner?.selectedItem as ItemData
+            if (binding?.tvselectedItemQty?.text.toString().toInt()>=(selectedItem.getQty()).toInt()) {
                 Toast.makeText(requireContext(), "Qty can't be increased", Toast.LENGTH_SHORT).show()
             } else {
                 var qty = binding?.tvselectedItemQty?.text.toString().toInt()
@@ -78,6 +77,7 @@ class BillFragment : Fragment() {
 
         }
         binding?.btnOrder?.setOnClickListener {
+            var selectedItem = binding?.dynamicSpinner?.selectedItem as ItemData
             if (binding?.tvselectedItemQty?.text.toString().toInt() < 1) {
                 Toast.makeText(requireContext(), "Order cannot be placed", Toast.LENGTH_LONG).show()
             } else if (binding?.tvselectedItemQty?.text.toString().toInt() > selectedItem.getQty()
