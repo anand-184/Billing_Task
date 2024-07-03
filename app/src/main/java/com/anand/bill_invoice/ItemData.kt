@@ -7,5 +7,9 @@ data class ItemData(
     fun getQty():Int{
         return itemqty?.toInt() ?: 0
     }
+    override fun toString(): String{
+        return "$itemName"
+
+    }
 }
 

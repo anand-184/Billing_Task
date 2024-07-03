@@ -47,7 +47,7 @@ class BillFragment : Fragment() {
         billAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
-            mainActivity?.itemArray ?: arrayListOf()
+            mainActivity?.itemArray?: arrayListOf()
         )
         binding?.dynamicSpinner?.adapter = billAdapter
         billAdapter.notifyDataSetChanged()
@@ -67,24 +67,23 @@ class BillFragment : Fragment() {
         }
         binding?.btnAddQty?.setOnClickListener {
             var selectedItem = binding?.dynamicSpinner?.selectedItem as ItemData
-            if (binding?.tvselectedItemQty?.text.toString().toInt()>=(selectedItem.getQty()).toInt()) {
+            if (binding?.tvselectedItemQty?.text.toString().toInt()>=(selectedItem?.getQty())?.toInt()?:0) {
                 Toast.makeText(requireContext(), "Qty can't be increased", Toast.LENGTH_SHORT).show()
             } else {
                 var qty = binding?.tvselectedItemQty?.text.toString().toInt()
                 qty++
                 binding?.tvselectedItemQty?.setText(qty.toString())
             }
-
         }
         binding?.btnOrder?.setOnClickListener {
             var selectedItem = binding?.dynamicSpinner?.selectedItem as ItemData
-            if (binding?.tvselectedItemQty?.text.toString().toInt() < 1) {
-                Toast.makeText(requireContext(), "Order cannot be placed", Toast.LENGTH_LONG).show()
-            } else if (binding?.tvselectedItemQty?.text.toString().toInt() > selectedItem.getQty()
+            if (binding?.tvselectedItemQty?.text.toString().toInt()?:0 <= 1) {
+                Toast.makeText(requireContext(), "Order cannot be placed", Toast.LENGTH_SHORT).show()
+            } else if (binding?.tvselectedItemQty?.text.toString().toInt()?:0 > selectedItem.getQty()
             ) {
-                Toast.makeText(requireContext(), "order cannot be placed", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "order cannot be placed", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), "Order Placed", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Order Placed", Toast.LENGTH_SHORT).show()
             }
 
         }
